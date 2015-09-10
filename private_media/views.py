@@ -45,7 +45,6 @@ def serve_private_file(request, path):
     """
     Serve private files to users with read permission.
     """
-    logger.debug('Serving {0} to {1}'.format(path, request.user))
     if not permissions.has_read_permission(request, path):
         if settings.DEBUG:
             raise PermissionDenied

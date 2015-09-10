@@ -46,6 +46,17 @@ To upload to a private location, add to your `settings.py` e.g.::
         PRIVATE_MEDIA_SERVER = 'private_media.servers.ApacheXSendfileServer'
         #PRIVATE_MEDIA_SERVER_OPTIONS = {'arg1': 1, ...}  # (optional) kwargs to init server
 
+For nginx also add::
+
+        PRIVATE_MEDIA_INTERNAL_URL = '/private-x-accel-redirect/'
+
+The correspoding entry in the nginx configuration could be:
+
+        location /private-x-accel-redirect/ (
+             internal;
+             alias /home/user/my/path/to/private/media/;
+        )
+
 The default permissioning is for authenticated staff members to see all, and no one else.
 To generalise this, also add::
 

@@ -8,8 +8,8 @@ import os
 class NginxXAccelRedirectServer(object):
     def serve(self, request, path):
         response = HttpResponse()
-        fullpath = os.path.join(settings.PRIVATE_MEDIA_ROOT, path)
-        response['X-Accel-Redirect'] = fullpath
+        url = os.path.join(settings.PRIVATE_MEDIA_INTERNAL_URL, path)
+        response['X-Accel-Redirect'] = url.encode('utf-8')
         response['Content-Type'] = mimetypes.guess_type(path)[0] or 'application/octet-stream'
         return response
 
