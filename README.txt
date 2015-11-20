@@ -70,6 +70,12 @@ This permissions class must have the method::
 which returns True or False.
 
 
+If you want to force the browser to save the files instead of possibly displaying them,
+add
+
+    PRIVATE_MEDIA_FORCE_DOWNLOAD = True
+
+
 Add to your `INSTALLED_APPS`::
 
     INSTALLED_APPS = {

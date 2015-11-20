@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -50,4 +50,4 @@ def serve_private_file(request, path):
             raise PermissionDenied
         else:
             raise Http404('File not found')
-    return server.serve(request, path=path)
+    return server.serve(request, relative_path=path)

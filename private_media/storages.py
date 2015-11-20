@@ -14,7 +14,7 @@ if DEBUG:
     import os
     PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
     PRIVATE_MEDIA_ROOT = os.path.join(PROJECT_PATH, 'private')
-    PRIVATE_MEDIA_SERVER = 'private_media.servers.DefaultServer'
+    PRIVATE_MEDIA_SERVER = 'private_media.servers.LocalDevelopmentServer'
 else:
     # prod
     PRIVATE_MEDIA_ROOT = '/home/user/my/path/to/private/media'
