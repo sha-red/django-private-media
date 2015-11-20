@@ -101,7 +101,7 @@ class ApacheXSendfileServer(BasePrivateMediaServer):
 
 class NginxXAccelRedirectServer(BasePrivateMediaServer):
     def prepare_response(self, request, response, relative_path):
-        response = super(ApacheXSendfileServer, self).prepare_response(request, response, relative_path)
+        response = super(NginxXAccelRedirectServer, self).prepare_response(request, response, relative_path)
 
         # Nginx expects a 'X-Accel-Redirect' header to a private url;
         # the actual filesystem path is set in the nginx configuration.
