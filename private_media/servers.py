@@ -2,6 +2,7 @@
 import mimetypes
 import os
 import stat
+from six.moves.urllib.parse import quote
 from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseNotModified
 from django.utils.encoding import smart_str
@@ -30,14 +31,14 @@ class BasePrivateMediaServer(object):
             return getattr(settings, 'PRIVATE_MEDIA_FORCE_DOWNLOAD', self.FORCE_DOWNLOAD)
 
     def get_filename(self, relative_path):
-        return os.path.basename(self.get_full_path(relative_path))
+        return smart_str(os.path.basename(self.get_full_path(relative_path)))
 
     def add_attachment_header(self, response, relative_path):
         """
         Add header to force the browser to save the file instead of possibly displaying it.
         """
         filename = self.get_filename(relative_path)
-        response['Content-Disposition'] = smart_str('attachment; filename={0}'.format(filename))
+        response['Content-Disposition'] = "attachment; filename*=UTF=8''{0}".format(quote(filename))
         return response
 
     def prepare_response(self, request, response, relative_path):

@@ -10,9 +10,13 @@ Added missing import ImproperlyConfigured
 -----
 Changed mimetype to content_type to work with Django 1.7
 
-0.1.3(b)
---------
+0.1.3(b) Erik Stein <erik@classlibrary.net>
+-------------------------------------------
 
-Erik Stein <erik@classlibrary.net>
 Added correct Nginx setup.
 Refactored servers.
+
+0.1.3(c) Erik Stein <erik@classlibrary.net>
+-------------------------------------------
+
+Improved filename encoding for content-disposition header.
