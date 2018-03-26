@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
+
+from importlib import import_module
+import logging
+
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
-from django.core.files.base import File
-from django.core.files.storage import get_storage_class
-from . import servers
 
-import logging
+
 logger = logging.getLogger(__name__)
 
-from importlib import import_module
 
 def get_class(import_path=None):
     """
@@ -22,7 +22,7 @@ def get_class(import_path=None):
         dot = import_path.rindex('.')
     except ValueError:
         raise ImproperlyConfigured("%s isn't a module." % import_path)
-    module, classname = import_path[:dot], import_path[dot+1:]
+    module, classname = import_path[:dot], import_path[dot + 1:]
     try:
         mod = import_module(module)
     except ImportError as e:
@@ -33,9 +33,12 @@ def get_class(import_path=None):
         raise ImproperlyConfigured('Module "%s" does not define a "%s" class.' % (module, classname))
 
 
-server = get_class(settings.PRIVATE_MEDIA_SERVER)(**getattr(settings, 'PRIVATE_MEDIA_SERVER_OPTIONS', {}))
-if hasattr(settings,'PRIVATE_MEDIA_PERMISSIONS'):
-    permissions = get_class(settings.PRIVATE_MEDIA_PERMISSIONS)(**getattr(settings, 'PRIVATE_MEDIA_PERMISSIONS_OPTIONS', {}))
+server = get_class(settings.PRIVATE_MEDIA_SERVER)(
+    **getattr(settings, 'PRIVATE_MEDIA_SERVER_OPTIONS', {}))
+
+if hasattr(settings, 'PRIVATE_MEDIA_PERMISSIONS'):
+    permissions = get_class(settings.PRIVATE_MEDIA_PERMISSIONS)(
+        **getattr(settings, 'PRIVATE_MEDIA_PERMISSIONS_OPTIONS', {}))
 else:
     from .permissions import DefaultPrivatePermissions
     permissions = DefaultPrivatePermissions()

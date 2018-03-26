@@ -1,4 +1,3 @@
-from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
@@ -103,11 +102,16 @@ Caveat - I have not tested this, and exposing user's primary keys is potentially
 #                                   base_url=settings.PRIVATE_MEDIA_URL,
 #                                   )
 
+
 class PrivateMediaStorage(FileSystemStorage):
+    """
+    FileSystemStorage subclass which simply sets the location of file to
+    PRIVATE_MEDIA_ROOT and the base url to PRIVATE_MEDIA_URL.
+    """
+
     def __init__(self, location=None, base_url=None):
         if location is None:
             location = settings.PRIVATE_MEDIA_ROOT
         if base_url is None:
             base_url = settings.PRIVATE_MEDIA_URL
         return super(PrivateMediaStorage, self).__init__(location, base_url)
-

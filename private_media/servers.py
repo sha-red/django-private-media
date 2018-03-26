@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+
 import mimetypes
 import os
 import stat
 from six.moves.urllib.parse import quote
+
 from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseNotModified
 from django.utils.encoding import smart_str
@@ -16,13 +18,15 @@ class BasePrivateMediaServer(object):
     FORCE_DOWNLOAD = True
 
     def get_url(self, relative_path):
-        return os.path.join(self.INTERNAL_URL or settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path).encode('utf-8')
+        return os.path.join(self.INTERNAL_URL or
+            settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path).encode('utf-8')
 
     def get_full_path(self, relative_path):
         return os.path.join(self.ROOT or settings.PRIVATE_MEDIA_ROOT, relative_path)
 
     def get_mimetype(self, relative_path):
-        return mimetypes.guess_type(self.get_full_path(relative_path))[0] or 'application/octet-stream'
+        return mimetypes.guess_type(
+            self.get_full_path(relative_path))[0] or 'application/octet-stream'
 
     def get_force_download(self, overwrite=None):
         if overwrite is not None:
