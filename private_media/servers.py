@@ -63,6 +63,7 @@ class LocalDevelopmentServer(BasePrivateMediaServer):
 
     This will only work for files that can be accessed in the local filesystem.
     """
+    FORCE_DOWNLOAD = False
 
     def serve(self, request, relative_path):
         # the following code is largely borrowed from `django.views.static.serve`
