@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from importlib import import_module
 import logging
@@ -33,12 +34,9 @@ def get_class(import_path=None):
         raise ImproperlyConfigured('Module "%s" does not define a "%s" class.' % (module, classname))
 
 
-server = get_class(settings.PRIVATE_MEDIA_SERVER)(
-    **getattr(settings, 'PRIVATE_MEDIA_SERVER_OPTIONS', {}))
-
+server = get_class(settings.PRIVATE_MEDIA_SERVER)(**getattr(settings, 'PRIVATE_MEDIA_SERVER_OPTIONS', {}))
 if hasattr(settings, 'PRIVATE_MEDIA_PERMISSIONS'):
-    permissions = get_class(settings.PRIVATE_MEDIA_PERMISSIONS)(
-        **getattr(settings, 'PRIVATE_MEDIA_PERMISSIONS_OPTIONS', {}))
+    permissions = get_class(settings.PRIVATE_MEDIA_PERMISSIONS)(**getattr(settings, 'PRIVATE_MEDIA_PERMISSIONS_OPTIONS', {}))
 else:
     from .permissions import DefaultPrivatePermissions
     permissions = DefaultPrivatePermissions()

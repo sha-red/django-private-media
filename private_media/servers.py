@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import mimetypes
 import os
@@ -18,15 +19,13 @@ class BasePrivateMediaServer(object):
     FORCE_DOWNLOAD = True
 
     def get_url(self, relative_path):
-        return os.path.join(self.INTERNAL_URL or
-            settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path).encode('utf-8')
+        return os.path.join(self.INTERNAL_URL or settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path).encode('utf-8')
 
     def get_full_path(self, relative_path):
         return os.path.join(self.ROOT or settings.PRIVATE_MEDIA_ROOT, relative_path)
 
     def get_mimetype(self, relative_path):
-        return mimetypes.guess_type(
-            self.get_full_path(relative_path))[0] or 'application/octet-stream'
+        return mimetypes.guess_type(self.get_full_path(relative_path))[0] or 'application/octet-stream'
 
     def get_force_download(self, overwrite=None):
         if overwrite is not None:
@@ -63,7 +62,6 @@ class LocalDevelopmentServer(BasePrivateMediaServer):
 
     This will only work for files that can be accessed in the local filesystem.
     """
-    FORCE_DOWNLOAD = False
 
     def serve(self, request, relative_path):
         # the following code is largely borrowed from `django.views.static.serve`
