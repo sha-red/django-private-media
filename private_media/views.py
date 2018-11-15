@@ -50,5 +50,5 @@ def serve_private_file(request, path):
         if settings.DEBUG:
             raise PermissionDenied
         else:
-            raise Http404('File not found')
+            raise Http404('Protected file not found')
     return server.serve(request, relative_path=path)
