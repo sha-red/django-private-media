@@ -47,7 +47,7 @@ setup(
     name='django-private-media',
     version=get_version('private_media'),
     description='',
-    long_description=read('README.markdown'),
+    long_description=read('README.txt'),
     url='https://github.com/sha-red/django-private-media',
     license='BSD License',
     platforms=['OS Independent'],
