@@ -1,33 +1,60 @@
-import os
+#!/usr/bin/env python
+
+from io import open
 from setuptools import setup, find_packages
+import os
+import re
+import subprocess
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.txt')).read()
 
-# allow setup.py to be run from any path
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+"""
+Use `git tag 1.0.0` to tag a release; `python setup.py --version`
+to update the  _version.py file.
+"""
+
+
+def get_version(prefix):
+    if os.path.exists('.git'):
+        parts = subprocess.check_output(['git', 'describe', '--tags']).decode().strip().split('-')
+        if len(parts) == 3:
+            version = '{}.{}+{}'.format(*parts)
+        else:
+            version = parts[0]
+        version_py = "__version__ = '{}'".format(version)
+        _version = os.path.join(prefix, '_version.py')
+        if not os.path.exists(_version) or open(_version).read().strip() != version_py:
+            with open(_version, 'w') as fd:
+                fd.write(version_py)
+        return version
+    else:
+        for f in ('_version.py', '__init__.py'):
+            f = os.path.join(prefix, f)
+            if os.path.exists(f):
+                with open(f) as fd:
+                    metadata = dict(re.findall("__([a-z]+)__ = '([^']+)'", fd.read()))
+                if 'version' in metadata:
+                    break
+    return metadata['version']
+
+
+def read(filename):
+    path = os.path.join(os.path.dirname(__file__), filename)
+    with open(path, encoding='utf-8') as handle:
+        return handle.read()
+
 
 setup(
-    name = 'django-private-media',
-    version = '0.1.3(c)',
-    packages = find_packages(),
-    include_package_data = True,
-    license = 'BSD License',
-    description = """Private media for Django. Check the user's authorization before serving files at PRIVATE_MEDIA_URL, uploaded to PRIVATE_MEDIA_ROOT. Requires Django 1.5.""",
-    long_description = README,
-    keywords = "private media xsendfile",
-    url = 'https://github.com/RacingTadpole/django-private-media',
-    author = 'Arthur Street',
-    author_email = 'arthur@racingtadpole.com',
-    classifiers = [
-        'Environment :: Web Environment',
-        'Framework :: Django',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-    ],
-    zip_safe = False,
+    name='django-private-media',
+    version=get_version('compass_mixins'),
+    description='',
+    long_description=read('README.markdown'),
+    url='https://github.com/sha-red/django-private-media',
+    license='BSD License',
+    platforms=['OS Independent'],
+    packages=find_packages(
+        exclude=['tests', 'testapp'],
+    ),
+    include_package_data=True,
+    install_requires=[],
+    zip_safe=False,
 )
