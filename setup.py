@@ -45,7 +45,7 @@ def read(filename):
 
 setup(
     name='django-private-media',
-    version=get_version('compass_mixins'),
+    version=get_version('private_media'),
     description='',
     long_description=read('README.markdown'),
     url='https://github.com/sha-red/django-private-media',
