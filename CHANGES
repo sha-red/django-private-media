@@ -1,5 +1,8 @@
-2019-05-09 0.2
+2019-05-09 0.3
 - Fix for python3 (and possibly nginx)
+
+2018-11-19 0.2
+- Changed versioning.
 
 0.1.3(c) Erik Stein <erik@classlibrary.net>
 - Improved filename encoding for content-disposition header.
