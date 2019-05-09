@@ -10,6 +10,7 @@ from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseNotModified
 from django.utils.encoding import smart_str
 from django.utils.http import http_date
+from django.utils import six
 from django.views.static import was_modified_since
 
 
@@ -19,7 +20,13 @@ class BasePrivateMediaServer(object):
     FORCE_DOWNLOAD = True
 
     def get_url(self, relative_path):
-        return os.path.join(self.INTERNAL_URL or settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path).encode('utf-8')
+        url = os.path.join(self.INTERNAL_URL or settings.PRIVATE_MEDIA_INTERNAL_URL, relative_path)
+        if six.PY2:
+            return url.encode('utf-8')
+        else:
+            if not isinstance(url, bytes):
+                url = url.encode('utf-8')
+            return quote(url)
 
     def get_full_path(self, relative_path):
         return os.path.join(self.ROOT or settings.PRIVATE_MEDIA_ROOT, relative_path)
